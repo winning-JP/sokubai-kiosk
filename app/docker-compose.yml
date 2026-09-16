@@ -1,0 +1,40 @@
+name: sokubai-kiosk-0916
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: kiosk-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kiosk
+    ports:
+      - "3306:3306"
+    volumes:
+      - kiosk-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  app:
+    build:
+      context: ..
+      dockerfile: app/backend/Dockerfile
+    image: sokubai-kiosk:local
+    container_name: kiosk-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: db
+      DB_NAME: kiosk
+      DB_USER: root
+      DB_PASSWORD: root
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  kiosk-mysql:

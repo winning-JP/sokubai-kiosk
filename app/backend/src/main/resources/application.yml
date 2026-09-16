@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: sokubai-kiosk
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080

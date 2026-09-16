@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>即売キオスク｜ほしのあとりえ</title>
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    fetch("js/app.jsx?v=5")
+      .then(function (r) { return r.text(); })
+      .then(function (src) {
+        var out = Babel.transform(src, { presets: [["react", { runtime: "classic" }]] });
+        new Function(out.code)();
+      })
+      .catch(function (e) {
+        document.getElementById("root").textContent = "読み込みに失敗しました: " + e.message;
+      });
+  </script>
+</body>
+</html>
